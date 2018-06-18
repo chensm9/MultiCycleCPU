@@ -44,14 +44,18 @@ module CU(
   always @(posedge CLK or negedge RST) begin
     if (RST == 0) begin
       state = sIF;
+      IRWre = 0;
       i = 0;
     end
     else if (i == 0) begin
       state = sIF;
+      IRWre = 1;
       i = 1;
     end
-    else
+    else begin
       state = next_state; 
+      IRWre = (state == sIF) ? 1:0;
+    end
   end  
 
   always @(state or opCode) begin
@@ -85,7 +89,7 @@ module CU(
     PCWre = (next_state == sIF && opCode !== Halt) ? 1:0;
     DBDataSrc = (state == sMEM && opCode == Lw) ? 1:0;
     InsMemRW = 1;
-    IRWre = (next_state == sID) ? 1:0;
+//    IRWre = (next_state == sID) ? 1:0;
     WrRegDSrc = (state == sWB) ? 1:0;
     mRD = (state == sMEM && opCode == Lw) ? 1:0;
     mWR = (state == sMEM && opCode == Sw) ? 1:0;

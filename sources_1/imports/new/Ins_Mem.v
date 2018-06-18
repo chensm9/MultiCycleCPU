@@ -29,7 +29,7 @@ module Ins_Mem(
 
     initial begin
         $readmemb("C:/Users/admin/Desktop/MultiCycleCPU/instructions.txt", Mem);
-        Ins = { Mem[0], Mem[1], Mem[2], Mem[3] };
+        Ins = 0;
     end
     always @(pc or InsMemRW) begin
         if (InsMemRW) begin

@@ -25,7 +25,7 @@ module DataLate(
     input [31:0] DataIn,
     output reg [31:0] DataOut
     );
-    always @(negedge CLK) begin
+    always @(posedge CLK) begin
         DataOut = DataIn;
     end
 endmodule

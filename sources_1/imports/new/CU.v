@@ -20,11 +20,11 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module CU(
-  input CLK, RST,zero,sign,
+  input CLK, RST, zero, sign,
   input [5:0] opCode,
   output reg [1:0] RegDst, PCSrc,
   output reg [2:0] ALUOp, state,
-  output reg ALUSrcA ,ALUSrcB, mRD ,mWR, InsMemRW, ExtSel, PCWre, RegWre, DBDataSrc, WrRegDSrc, IRWre
+  output reg ALUSrcA, ALUSrcB, mRD ,mWR, InsMemRW, ExtSel, PCWre, RegWre, DBDataSrc, WrRegDSrc, IRWre
   );
 
   parameter [2:0] sIF = 3'b000, sID = 3'b001, sEXE = 3'b010,
@@ -35,15 +35,21 @@ module CU(
                   Bltz = 6'b1110110, J = 6'b111000, Jr = 6'b111001, Jal = 6'b111010,
                   Halt = 6'b111111;
   reg [2:0] next_state; 
+  integer i;
 
   initial begin
-    next_state = sIF;
-    IRWre = 0;
+    i = 0;
   end
 
   always @(posedge CLK or negedge RST) begin
-    if (RST == 0)
+    if (RST == 0) begin
       state = sIF;
+      i = 0;
+    end
+    else if (i == 0) begin
+      state = sIF;
+      i = 1;
+    end
     else
       state = next_state; 
   end  
@@ -65,7 +71,7 @@ module CU(
                   else
                     next_state = sWB;
                 end
-          sWB: next_state = sIF;
+          sWB: next_state = sIF; 
           sMEM:begin
                   if (opCode == Sw)
                     next_state = sIF;
@@ -79,17 +85,18 @@ module CU(
     PCWre = (next_state == sIF && opCode !== Halt) ? 1:0;
     DBDataSrc = (state == sMEM && opCode == Lw) ? 1:0;
     InsMemRW = 1;
-    IRWre = (state == sIF) ? 1:0;
+    IRWre = (next_state == sID) ? 1:0;
     WrRegDSrc = (state == sWB) ? 1:0;
     mRD = (state == sMEM && opCode == Lw) ? 1:0;
     mWR = (state == sMEM && opCode == Sw) ? 1:0;
     ExtSel = (opCode == Ori || opCode == Sltiu) ? 0:1;
     ALUSrcA = (opCode == Sll) ? 1:0;
     ALUSrcB = (opCode == Addi || opCode == Ori || opCode == Sltiu || opCode == Lw || opCode == Sw) ? 1:0;
-    if (opCode == Jal)
+    if (opCode == Jal && next_state == sIF && state == sID)
       RegWre = 1;
     else
-      RegWre = ( state != sWB || opCode == Beq || opCode == Bltz || opCode == J || opCode == Sw || opCode == Jr || opCode == Halt) ? 0:1;
+      RegWre = ( state != sWB || opCode == Beq || opCode == Bltz 
+                || opCode == J || opCode == Sw || opCode == Jr || opCode == Halt) ? 0:1;
       
     if ((opCode == Beq&&zero == 1) || (opCode == Bltz&&(zero == 0||sign == 1)))
       PCSrc = 2'b01;

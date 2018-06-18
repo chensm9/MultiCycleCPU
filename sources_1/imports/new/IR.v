@@ -30,7 +30,7 @@ module IR(
     output reg [5:0] sa
     );
     always @ (posedge CLK) begin
-        if (CLK == 1 && IRWre == 1) begin
+        if (IRWre == 1) begin
             opCode = Ins[31:26];
             rs = Ins[25:21];
             rt = Ins[20:16];

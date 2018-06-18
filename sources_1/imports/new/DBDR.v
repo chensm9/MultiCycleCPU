@@ -25,7 +25,7 @@ module DBDR(
     input [31:0] ALUResult, DMOut,
     output reg [31:0] DBOut
     );
-    always @(negedge CLK) begin
+    always @(posedge CLK) begin
         DBOut = DBDataSrc == 1 ? DMOut : ALUResult;
     end
 endmodule

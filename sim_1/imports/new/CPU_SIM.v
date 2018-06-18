@@ -44,25 +44,25 @@ module CPU_SIM;
         opCode,
         ReadData1, ReadData2, currentPC, nextPC, ALUResult, DBOut
     );
-//    initial begin
-//      CLK = 0;
-//      RST = 0;
-//      #50; // ¸Õ¿ªÊ¼ÉèÖÃpcÎª0
-//          CLK = !CLK;
-//      #50;
-//          RST = 1;
-//      forever #50 begin // ²úÉúÊ±ÖÓÐÅºÅ
-//          CLK = !CLK;
-//      end
-//    end
     initial begin
-      CLK = 0;
-      RST = 0;
-      #100;
-        RST = 1;
-      forever #50 begin // ²úÉúÊ±ÖÓÐÅºÅ
-          CLK = !CLK;
-      end
+        CLK = 0;
+        RST = 0;
+        #50; // ï¿½Õ¿ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½pcÎª0
+            CLK = !CLK;
+        #50;
+            RST = 1;
+        forever #50 begin // ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Åºï¿½
+            CLK = !CLK;
+        end
     end
+    // initial begin
+    //   CLK = 0;
+    //   RST = 0;
+    //   #100;
+    //     RST = 1;
+    //   forever #50 begin // ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Åºï¿½
+    //       CLK = !CLK;
+    //   end
+    // end
 
 endmodule

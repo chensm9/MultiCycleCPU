@@ -32,14 +32,14 @@ module Data_Mem(
     initial begin  
         for (i = 0; i < 64; i = i+1) ram[i] <= 0;  
     end  
-    // ��
+    
     always @ (mRD) begin
         if (mRD == 1) 
             DMOut = { ram[address], ram[address+1], ram[address+2], ram[address+3] };
         else
             DMOut = 32'bz;
     end
-    // д
+
     always@( mWR ) begin
         if( mWR==1 ) begin
             ram[address] <= DataIn[31:24];

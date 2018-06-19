@@ -89,14 +89,13 @@ module CU(
     PCWre = (next_state == sIF && opCode !== Halt) ? 1:0;
     DBDataSrc = (state == sMEM && opCode == Lw) ? 1:0;
     InsMemRW = 1;
-//    IRWre = (next_state == sID) ? 1:0;
     WrRegDSrc = (state == sWB) ? 1:0;
     mRD = (state == sMEM && opCode == Lw) ? 1:0;
     mWR = (state == sMEM && opCode == Sw) ? 1:0;
     ExtSel = (opCode == Ori || opCode == Sltiu) ? 0:1;
     ALUSrcA = (opCode == Sll) ? 1:0;
     ALUSrcB = (opCode == Addi || opCode == Ori || opCode == Sltiu || opCode == Lw || opCode == Sw) ? 1:0;
-    if (opCode == Jal && next_state == sIF && state == sID)
+    if (opCode == Jal && state == sID)
       RegWre = 1;
     else
       RegWre = ( state != sWB || opCode == Beq || opCode == Bltz 
@@ -135,9 +134,9 @@ module CU(
     else
       ALUOp = 3'b000;
     
-    if (state == sIF) begin  
-      RegWre = 0;  
-      mWR = 0;  
-    end  
+//    if (state == sIF) begin  
+//      RegWre = 0;  
+//      mWR = 0;  
+//    end  
   end
 endmodule

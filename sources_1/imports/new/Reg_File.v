@@ -37,6 +37,7 @@ module Reg_File(
     end 
     
     assign WriteData =  WrRegDSrc == 1 ? DBOut : (pc+4);
+   
     assign ReadData1 = (rs == 0) ? 0 : regFile[rs];
     assign ReadData2 = (rt == 0) ? 0 : regFile[rt];
    
@@ -52,7 +53,7 @@ module Reg_File(
                 2'b10: WriteReg = rd;
             endcase
             if(RegWre == 1 && WriteReg != 0)
-                regFile[WriteReg] <= WriteData;
+                regFile[WriteReg] = WriteData;
         end
     end
 endmodule

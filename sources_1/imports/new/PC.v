@@ -32,7 +32,7 @@ module PC(
         nextPC = 4;
     end
     
-    always @(negedge CLK or negedge RST) begin
+    always @(posedge CLK or negedge RST) begin
         if (RST == 0) 
             currentPC = 0;
         else if (PCWre == 1)
